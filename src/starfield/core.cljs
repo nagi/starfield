@@ -16,7 +16,7 @@
 
 (def canvas-x 500)
 (def canvas-y 500)
-(def star-size 9)
+(def star-size 6)
 (def z-acceleration 0.009)
 (def frame-rate 60)
 
@@ -34,7 +34,7 @@
   (q/color-mode :rgb)
   ; setup function returns initial state. It contains
   ; circle color and position.
-  {:stars (sort-by last (repeatedly 400 random-star))})
+  {:stars (sort-by last (repeatedly 1000 random-star))})
 
 (defn move-star [star]
   (let [x (first star)
@@ -51,7 +51,7 @@
               (map move-star stars))}))
 
 (defn scale-perspective [x axis z]
-  (let [z (Math.pow 20 z)
+  (let [z (Math.pow 209 z) ;; WTF??
         in-a-square (+ (/ axis 2) (* axis x))
         half-axis (/ axis 2)
         gap (- 1 z) 
