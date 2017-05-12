@@ -1,0 +1,4 @@
+--ignore-dir=target
+--ignore-dir=resources/public/js/compiled
+--ignore-dir=.cljs_rhino_repl
+--ignore-file=match:figwheel_server.log
