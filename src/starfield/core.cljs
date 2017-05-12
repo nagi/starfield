@@ -16,9 +16,9 @@
 
 (def canvas-x 500)
 (def canvas-y 500)
-(def star-size 4)
+(def star-size 9)
 (def z-acceleration 0.009)
-(def frame-rate 50)
+(def frame-rate 60)
 
 (defn random-star []
   ;; (repeatedly 3 #(- (rand) 0.5)))
@@ -34,16 +34,14 @@
   (q/color-mode :rgb)
   ; setup function returns initial state. It contains
   ; circle color and position.
-  {:stars (sort-by last (repeatedly 200 random-star))})
+  {:stars (sort-by last (repeatedly 400 random-star))})
 
 (defn move-star [star]
-  (let [
-        x (first star)
+  (let [x (first star)
         y (second star)
         z (last star)
         z (+ z-acceleration z)
-        z (if (> z 1) (- z 1) z)
-        ]
+        z (if (> z 1) (- z 1) z)]
     (list x y z)))
 
 (defn update-state [state]
@@ -53,12 +51,12 @@
               (map move-star stars))}))
 
 (defn scale-perspective [x axis z]
-  (let [in-a-square (+ (/ axis 2) (* axis x))
+  (let [z (Math.pow 20 z)
+        in-a-square (+ (/ axis 2) (* axis x))
         half-axis (/ axis 2)
         gap (- 1 z) 
         shift (* half-axis gap)
         ]
-    ;; (println " === " shift)
     (+ shift
        (* z in-a-square))))
 
@@ -70,21 +68,13 @@
         size (* star-size (Math.pow 2 z))
         shade (* z 255)]
     (q/fill shade shade shade)
-    ;; (println " ---- " + z)
-    ;; (println (str "x, y = " (first star) " : " (second star)))
-    ;; (println (str "x, y = " x " : " y))
     (q/ellipse x y size size)))
 
 (defn draw-state [state]
-  ; Clear the sketch by filling it with light-grey color.
   (q/background 0)
-  ; Set circle color.
-  (q/fill 225 255 255)
   ; Calculate x and y coordinates of the circle.
-  ; (draw-star (first (:stars state)))
   (doall
-   (map draw-star (:stars state)))
-  )
+   (map draw-star (:stars state))))
 
 (q/defsketch quil-cljs
   :host "quil-canvas"
