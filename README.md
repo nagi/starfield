@@ -1,10 +1,10 @@
 # starfield
 
-FIXME: Write a one-line description of your library/project.
+Fly through space.
 
 ## Overview
 
-FIXME: Write a paragraph about the library/project and highlight its goals.
+Pointless clojure script starfield simulation rendered on an HTML5 canvas element.
 
 ## Basic Setup
 
@@ -42,9 +42,3 @@ First, cider-jack-in
 (figwheel-sidecar.repl-api/cljs-repl)
 (ns starfield.core)
 ```
-
-## License
-
-Copyright © 2014 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at your option) any later version.
