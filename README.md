@@ -6,7 +6,7 @@ FIXME: Write a one-line description of your library/project.
 
 FIXME: Write a paragraph about the library/project and highlight its goals.
 
-## Setup
+## Basic Setup
 
 To get an interactive development environment run:
 
@@ -31,6 +31,17 @@ To create a production build run:
 
 And open your browser in `resources/public/index.html`. You will not
 get live reloading, nor a REPL. 
+
+## CIDER
+
+First, cider-jack-in
+
+```
+(use 'figwheel-sidecar.repl-api)
+(start-figwheel!)
+(figwheel-sidecar.repl-api/cljs-repl)
+(ns starfield.core)
+```
 
 ## License
 

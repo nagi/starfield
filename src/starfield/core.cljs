@@ -18,18 +18,12 @@
 (def star-size 9)
 (def z-acceleration 0.009)
 
-(defn scale-x [x]
-  (* x canvas-x))
-
-(defn scale-y [y]
-  (* y canvas-y))
-
 (defn random-star []
   (repeatedly 3 rand))
 
 (defn setup []
   ; Set frame rate to 30 frames per second.
-  (q/frame-rate 60)
+  (q/frame-rate 40)
   ; Set color mode to HSB (HSV) instead of default RGB.
   (q/color-mode :rgb)
   ; setup function returns initial state. It contains
