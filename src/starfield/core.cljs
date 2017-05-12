@@ -21,11 +21,7 @@
 (def frame-rate 60)
 
 (defn random-star []
-  ;; (repeatedly 3 #(- (rand) 0.5)))
-  (list  (- (rand) 0.5)
-         (- (rand) 0.5)
-         (- (rand) 0.5)
-         ))
+  (repeatedly 3 #(- (rand) 0.5)))
 
 (defn setup []
   ; Set frame rate to 30 frames per second.
@@ -34,7 +30,7 @@
   (q/color-mode :rgb)
   ; setup function returns initial state. It contains
   ; circle color and position.
-  {:stars (sort-by last (repeatedly 1000 random-star))})
+  {:stars (repeatedly 1000 random-star)})
 
 (defn move-star [star]
   (let [x (first star)
@@ -73,8 +69,8 @@
 (defn draw-state [state]
   (q/background 0)
   ; Calculate x and y coordinates of the circle.
-  (doall
-   (map draw-star (:stars state))))
+  (doseq [star (:stars state)]
+   (draw-star star)))
 
 (q/defsketch quil-cljs
   :host "quil-canvas"
