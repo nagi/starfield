@@ -2,6 +2,7 @@
   (:require [quil.core :as q :include-macros true]
             [quil.middleware :as m]))
 
+
 (enable-console-print!)
 
 ;; define your app data so that it doesn't get over-written on reload
@@ -15,15 +16,20 @@
 
 (def canvas-x 500)
 (def canvas-y 500)
-(def star-size 9)
+(def star-size 4)
 (def z-acceleration 0.009)
+(def frame-rate 50)
 
 (defn random-star []
-  (repeatedly 3 rand))
+  ;; (repeatedly 3 #(- (rand) 0.5)))
+  (list  (- (rand) 0.5)
+         (- (rand) 0.5)
+         (- (rand) 0.5)
+         ))
 
 (defn setup []
   ; Set frame rate to 30 frames per second.
-  (q/frame-rate 40)
+  (q/frame-rate frame-rate)
   ; Set color mode to HSB (HSV) instead of default RGB.
   (q/color-mode :rgb)
   ; setup function returns initial state. It contains
@@ -31,24 +37,42 @@
   {:stars (sort-by last (repeatedly 200 random-star))})
 
 (defn move-star [star]
-  (let [x (+ (* z-acceleration (* (last star)(last star))) (first star))
-        x (if (> x 1) (- x 1) x)
+  (let [
+        x (first star)
         y (second star)
-        z (last star)]
+        z (last star)
+        z (+ z-acceleration z)
+        z (if (> z 1) (- z 1) z)
+        ]
     (list x y z)))
 
 (defn update-state [state]
   (let [stars (:stars state)]
     {:stars
-     (map move-star stars)}))
+     (sort-by last
+              (map move-star stars))}))
+
+(defn scale-perspective [x axis z]
+  (let [in-a-square (+ (/ axis 2) (* axis x))
+        half-axis (/ axis 2)
+        gap (- 1 z) 
+        shift (* half-axis gap)
+        ]
+    ;; (println " === " shift)
+    (+ shift
+       (* z in-a-square))))
 
 (defn draw-star [star]
-  (let [x (* canvas-x (first star))
-        y (* canvas-y (second star))
-        z (last star)
-        size (* star-size z)
+  (let [z (last star)
+        x (scale-perspective (first star) canvas-x z)
+        y (scale-perspective (second star) canvas-y z)
+        ;; size (* (Math.pow 2 star-size) z)
+        size (* star-size (Math.pow 2 z))
         shade (* z 255)]
     (q/fill shade shade shade)
+    ;; (println " ---- " + z)
+    ;; (println (str "x, y = " (first star) " : " (second star)))
+    ;; (println (str "x, y = " x " : " y))
     (q/ellipse x y size size)))
 
 (defn draw-state [state]
